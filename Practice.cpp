@@ -1,36 +1,50 @@
-#include <stdio.h>
-#include <stdlib.h>  // 동적 메모리 할당을 위해 필요
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<string.h>
 
-#define SIZE 8
+void runtime(int *hour, int *minute, int *second)
+{
+    while (1)
+    {
+        (*second)++;
 
-int denominations[SIZE] = {50000, 10000, 5000, 1000, 500, 100, 10, 1};  // 화폐 단위
+        if(*second == 60)
+        {
+            (*minute) ++;
+            *second = 0;
+        }
 
-void m(int a) {
-    // 동적 메모리 할당 (배열 크기만큼)
-    int* count = (int*)malloc(SIZE * sizeof(int));
+        if(*minute == 60)
+        {
+            (*hour) ++;
+            *minute = 0;
+        }
 
-    for (int i = 0; i < SIZE; i++) {
-        count[i] = a / denominations[i];  // 각 화폐 단위에 맞는 개수 계산
-        a -= denominations[i] * count[i];  // 남은 금액 계산
+        if(*hour == 24)
+        {
+            *hour = 0;
+        }
+
+        if(char *stop == "stop")
+        {
+            break;
+        }
+
+        // 현재 시간 출력 (줄바꿈 추가)
+        printf("%02d시 : %02d분 : %02d초\n", *hour, *minute, *second);
+
+        // 1초 대기
+        sleep(1);
     }
-
-    printf("오만원 지폐 : %d장\n", count[0]);
-    printf("일만원 지폐 : %d장\n", count[1]);
-    printf("오천원 지폐 : %d장\n", count[2]);
-    printf("일천원 지폐 : %d장\n", count[3]);
-    printf("오백원 동전 : %d개\n", count[4]);
-    printf("일백원 동전 : %d개\n", count[5]);
-    printf("일십원 동전 : %d개\n", count[6]);
-    printf("일원 동전 : %d개\n", count[7]);
-
-    // 메모리 해제
-    free(count);
 }
 
-int main(void) {
-    int a;
-    printf(">> ");
-    scanf("%d", &a); getchar();  // 입력받은 값을 a에 저장
-    m(a);  // 입력받은 값으로 함수 호출
+int main()
+{
+    // 시간, 분, 초 변수 선언
+    int hour = 0, minute = 0, second = 0;
+
+    // 포인터로 시간, 분, 초를 runtime 함수에 전달
+    runtime(&hour, &minute, &second);
     return 0;
 }
